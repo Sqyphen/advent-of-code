@@ -24,17 +24,17 @@ const isPassportValid = (passport) => {
   let valid = true;
 
   // (Birth Year) - four digits; at least 1920 and at most 2002
-  if (!isNumBetween(passport.byr, 1920, 2002)) {
+  if (passport.byr < 1920 || passport.byr > 2002) {
     valid = false;
   }
 
   //( Issue Year) - four digits; at least 2010 and at most 2020
-  if (!isNumBetween(passport.iyr, 2010, 2020)) {
+  if (passport.iyr < 2010 || passport.iyr > 2020) {
     valid = false;
   }
 
   // (Expiration Year) - four digits; at least 2020 and at most 2030
-  if (!isNumBetween(passport.eyr, 2020, 2030)) {
+  if (passport.eyr < 2020 || passport.eyr > 2030) {
     valid = false;
   }
 
@@ -43,13 +43,13 @@ const isPassportValid = (passport) => {
   // If in, the number must be at least 59 and at most 76.
   const hgtRgx = passport.hgt.match(/(\d+)(cm|in)/);
   if (hgtRgx && hgtRgx.length === 3) {
-    const [full, num, measure] = hgtRgx;
+    const [, num, measure] = hgtRgx;
     if (measure === "cm") {
-      if (!isNumBetween(num, 150, 193)) {
+      if (num < 150 || num > 193) {
         valid = false;
       }
     } else if (measure === "in") {
-      if (!isNumBetween(num, 59, 76)) {
+      if (num < 59 || num > 76) {
         valid = false;
       }
     } else {
@@ -60,31 +60,21 @@ const isPassportValid = (passport) => {
   }
 
   // (Hair Color) - a # followed by exactly six characters 0-9 or a-f
-  const hclRgx = passport.hcl.match(/^#[0-9a-f]{6}$/);
-  if (hclRgx === null) {
+  if (passport.hcl.match(/^#[0-9a-f]{6}$/) === null) {
     valid = false;
   }
 
   // (Eye Color) - exactly one of: amb blu brn gry grn hzl oth
-  const eclRgx = passport.ecl.match(/^amb|blu|brn|gry|grn|hzl|oth$/);
-  if (eclRgx === null) {
+  if (passport.ecl.match(/^amb|blu|brn|gry|grn|hzl|oth$/) === null) {
     valid = false;
   }
 
   // (Passport ID) - a nine-digit number, including leading zeroes
-  const pidRgx = passport.pid.match(/^\d{9}$/);
-  if (pidRgx === null) {
+  if (passport.pid.match(/^\d{9}$/) === null) {
     valid = false;
   }
 
   return valid;
-};
-
-const isNumBetween = (num, low, high) => {
-  if (num >= low && num <= high) {
-    return true;
-  }
-  return false;
 };
 
 // Check all passports
