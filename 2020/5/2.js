@@ -1,4 +1,4 @@
-// Day 5 : Part 1
+// Day 5 : Part 2
 
 "use_strict";
 
@@ -14,7 +14,8 @@ const rowMax = 127;
 const colMin = 0;
 const colMax = 7;
 
-let maxSeatID = 0;
+let seats = [];
+let mySeat = 0;
 
 puzzleData.forEach((seat) => {
   let rowMinTemp = rowMin;
@@ -61,12 +62,17 @@ puzzleData.forEach((seat) => {
   });
 
   const seatID = row * 8 + col;
+  seats.push(seatID);
+});
 
-  console.log(`${seat}: row ${row}, column ${col}, seat ID ${seatID}`);
+seats = seats.sort((a, b) => a - b);
 
-  if (seatID > maxSeatID) {
-    maxSeatID = seatID;
+seats.forEach((seat, index) => {
+  const seatCalc = parseInt(seat) - parseInt(seats[0]);
+
+  if (seatCalc !== index && mySeat === 0) {
+    mySeat = index + parseInt(seats[0]);
   }
 });
 
-console.log(maxSeatID);
+console.log("mySeat:", mySeat);
