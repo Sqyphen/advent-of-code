@@ -1,4 +1,4 @@
-// Day 6 : Part 1
+// Day 6 : Part 2
 
 "use_strict";
 
@@ -13,11 +13,20 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz";
 const counts = [];
 
 puzzleData.forEach((group) => {
-  const answers = group.replace(/\n/g, "");
+  const answers = group.split(/\n/).filter((el) => el != "");
+  const answersRows = answers.length;
   let answerCount = 0;
 
   alphabet.split("").forEach((letter) => {
-    if (answers.indexOf(letter) > -1) {
+    let tempCount = 0;
+
+    answers.forEach((answer) => {
+      if (answer.indexOf(letter) > -1) {
+        tempCount = tempCount + 1;
+      }
+    });
+
+    if (tempCount === answersRows) {
       answerCount = answerCount + 1;
     }
   });
